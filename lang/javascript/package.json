@@ -5,7 +5,11 @@
 	"scripts": {
 		"build": "tsc"
 	},
-	"bin": "./dist/walk.js",
+	"bin": {
+		"walk-javascript": "./dist/walk.js",
+		"walk-javascript-recursive": "./dist/walk-recursive.js",
+		"walk-javascript-concurrent-recursive": "./dist/walk-concurrent-recursive.js"
+	},
 	"devDependencies": {
 		"@types/node": "^25.5.0",
 		"typescript": "^6.0.2"
