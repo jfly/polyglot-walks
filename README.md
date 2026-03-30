@@ -10,9 +10,11 @@ symlinks) and count the number of directories and files discovered.
 Benchmarking is hard, I just slapped this together, and I don't really know
 what I'm doing. Still, I believe some of these differences are material.
 
-Here's what I got on my laptop when run against my
-`~/src` directory (~millions of files, ~hundreds of thousands of directories).
+Here's what I got on my laptop when run against a large directory. The absolute
+numbers don't matter, just the relative ones.
 
-![Some benchmark data](benchmark/benchmarks.png)
+![Some benchmark data](./benchmark/benchmarks.png)
 
-I encourage you to [run the benchmarks yourself](./benchmark/README.md).
+[Raw data](./benchmark/benchmarks.csv)
+
+Feel free to [run the benchmarks yourself](./benchmark/README.md).

@@ -37,14 +37,12 @@
             fi
 
             benchdir=$1
-            results=$2
+            results_csv=$2
 
-            mkdir "$results"
             hyperfine \
               --shell=none \
               --warmup=2 \
-              --export-markdown="$results/results.md" \
-              --export-csv="$results/results.csv" \
+              --export-csv="$results_csv" \
               ${hyperfinePositionalArgsStr}
           '';
         };
@@ -67,7 +65,10 @@
 
 
             def get_command_basename(command: str) -> str:
-                return os.path.basename(shlex.split(command)[0])
+                binary, *args = shlex.split(command)
+                first_part, *rest_parts = os.path.basename(binary).split("-")
+                assert first_part == "walk"
+                return "\n".join(rest_parts)
 
 
             parser = argparse.ArgumentParser()
@@ -77,12 +78,13 @@
 
             df = pd.read_csv(args.csv_file)
             df['base_command'] = df['command'].apply(get_command_basename)
+            df.sort_values('mean', inplace=True)
 
-            ax = df.plot(kind="bar", x='base_command', y='mean')
-            ax.set_ylabel("Time (seconds)")
-            ax.set_xlabel("")
-            ax.tick_params(axis='x', rotation=0)
+            ax = df.plot(kind="barh", x='base_command', y='mean')
+            ax.set_xlabel("Time (seconds)")
+            ax.set_ylabel("")
 
+            plt.title("Filesystem walk performance. Smaller is better (faster).")
             plt.tight_layout()
             plt.savefig(args.output_png, dpi=150)
             print(f"Saved {args.output_png}")
