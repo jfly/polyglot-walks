@@ -14,3 +14,5 @@ Here's what I got on my laptop when run against my
 `~/src` directory (~millions of files, ~hundreds of thousands of directories).
 
 ![Some benchmark data](benchmark/benchmarks.png)
+
+I encourage you to [run the benchmarks yourself](./benchmark/README.md).

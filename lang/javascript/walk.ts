@@ -3,26 +3,26 @@ import { join } from "path";
 
 const root = process.argv[2];
 
-async function walk(root: string) {
-	const counts = {
-		files: 0,
-		dirs: 1,
-	};
+let fileCount = 0;
+let dirCount = 0;
 
-	const children = await fs.readdir(root, { withFileTypes: true });
+const fringe = [root];
+while (true) {
+	const dir = fringe.pop();
+	if (dir == null) {
+		break;
+	}
+
+	dirCount++;
+	const children = await fs.readdir(dir, { withFileTypes: true });
 	for (const child of children) {
 		if (child.isDirectory()) {
-			const childCounts = await walk(join(child.parentPath, child.name));
-			counts.files += childCounts.files;
-			counts.dirs += childCounts.dirs;
+			fringe.push(join(child.parentPath, child.name));
 		} else {
-			counts.files++;
+			fileCount++;
 		}
 	}
-	return counts;
 }
 
-const counts = await walk(root);
-
-console.log(`${counts.files} file(s)`);
-console.log(`${counts.dirs} directories(s)`);
+console.log(`${fileCount} file(s)`);
+console.log(`${dirCount} directories(s)`);
