@@ -52,6 +52,7 @@
       options = {
         polyglot-walks.walkers = lib.mkOption {
           type = lib.types.lazyAttrsOf lib.types.package;
+          default = { };
         };
       };
 

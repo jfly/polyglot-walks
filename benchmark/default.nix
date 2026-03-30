@@ -3,7 +3,6 @@
   perSystem =
     {
       config,
-      self',
       pkgs,
       ...
     }:
@@ -13,7 +12,7 @@
           # Each entry is actually a bash expression which generates a
           # command to test.
           commands = lib.mapAttrsToList (
-            _walkerName: walkerPkg: "${lib.getExe self'.packages.walk-python} $benchdir"
+            _walkerName: walkerPkg: "${lib.getExe walkerPkg} $benchdir"
           ) config.polyglot-walks.walkers;
 
           # Wrap the bash expression in double quotes so it can be
