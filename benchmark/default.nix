@@ -2,6 +2,7 @@
 {
   perSystem =
     {
+      self',
       config,
       pkgs,
       ...
@@ -37,13 +38,22 @@
             fi
 
             benchdir=$1
-            results_csv=$2
+            benchmark_dir=$2
+
+            benchmark_csv=$(realpath --canonicalize-missing "$benchmark_dir/benchmarks.csv")
+            benchmark_svg=$(realpath --canonicalize-missing "$benchmark_dir/benchmarks.svg")
 
             hyperfine \
               --shell=none \
               --warmup=2 \
-              --export-csv="$results_csv" \
+              --export-csv="$benchmark_csv" \
               ${hyperfinePositionalArgsStr}
+
+            ${lib.getExe self'.packages.plot} "$benchmark_csv" "$benchmark_svg"
+
+            echo "Success!"
+            echo "CSV results: $benchmark_csv"
+            echo "Chart: $benchmark_svg"
           '';
         };
 
@@ -73,7 +83,7 @@
 
             parser = argparse.ArgumentParser()
             parser.add_argument("csv_file", type=Path)
-            parser.add_argument("output_png", type=Path)
+            parser.add_argument("output_svg", type=Path)
             args = parser.parse_args()
 
             df = pd.read_csv(args.csv_file)
@@ -86,8 +96,8 @@
 
             plt.title("Filesystem walk performance. Smaller is better (faster).")
             plt.tight_layout()
-            plt.savefig(args.output_png, dpi=150)
-            print(f"Saved {args.output_png}")
+            plt.savefig(args.output_svg, dpi=150)
+            print(f"Saved {args.output_svg}")
           '';
     };
 }

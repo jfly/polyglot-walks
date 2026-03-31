@@ -13,7 +13,7 @@ what I'm doing. Still, I believe some of these differences are material.
 Here's what I got on my laptop when run against a large directory. The absolute
 numbers don't matter, just the relative ones.
 
-![Some benchmark data](./benchmark/benchmarks.png)
+![Some benchmark data](./benchmark/benchmarks.svg)
 
 [Raw data](./benchmark/benchmarks.csv)
 
